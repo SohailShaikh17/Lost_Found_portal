@@ -1,0 +1,237 @@
+<div class="official-item-card">
+
+  <!-- Image -->
+  <div class="official-item-image-wrap">
+    {% if item.image %}
+      <img src="{{ item.image.url }}" class="official-item-image" alt="{{ item.title }}">
+    {% else %}
+      <div class="official-item-placeholder">
+        <div class="placeholder-icon">📦</div>
+        <div class="placeholder-text">No Image Available</div>
+      </div>
+    {% endif %}
+
+    <!-- Type Badge -->
+    <span class="type-badge {% if item.item_type == 'LOST' %}badge-lost{% else %}badge-found{% endif %}">
+      {{ item.get_item_type_display }}
+    </span>
+
+    <!-- Status Badge -->
+    <span class="status-badge-card status-{{ item.status|lower }}">
+      {{ item.get_status_display }}
+    </span>
+  </div>
+
+  <!-- Content -->
+  <div class="official-item-body">
+    <h5 class="official-item-title">{{ item.title }}</h5>
+
+    <div class="official-item-meta">
+      <span>📍 {{ item.location|default:"Campus" }}</span>
+      <span>📅 {{ item.date_of_event }}</span>
+    </div>
+
+    <p class="official-item-description">
+      {{ item.description|truncatechars:100 }}
+    </p>
+
+    <div class="official-item-footer">
+      <div class="official-item-category">
+        {{ item.category|default:"General" }}
+      </div>
+
+      <a href="{{ item.get_absolute_url }}" class="official-item-btn">
+        View Details
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .official-item-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+    transition: all 0.22s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .official-item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+    border-color: #cbd5e1;
+  }
+
+  .official-item-image-wrap {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  .official-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .official-item-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #eef2f7, #f8fafc);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .placeholder-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .type-badge,
+  .status-badge-card {
+    position: absolute;
+    top: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    backdrop-filter: blur(6px);
+  }
+
+  .type-badge {
+    left: 14px;
+  }
+
+  .status-badge-card {
+    right: 14px;
+  }
+
+  .badge-lost {
+    background: rgba(185, 28, 28, 0.95);
+    color: white;
+  }
+
+  .badge-found {
+    background: rgba(21, 128, 61, 0.95);
+    color: white;
+  }
+
+  .status-open {
+    background: rgba(29, 78, 216, 0.95);
+    color: white;
+  }
+
+  .status-claimed {
+    background: rgba(21, 128, 61, 0.95);
+    color: white;
+  }
+
+  .status-resolved {
+    background: rgba(180, 83, 9, 0.95);
+    color: white;
+  }
+
+  .official-item-body {
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .official-item-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .official-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .official-item-description {
+    color: #475569;
+    font-size: 0.92rem;
+    line-height: 1.75;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+
+  .official-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .official-item-category {
+    display: inline-flex;
+    align-items: center;
+    background: #f1f5f9;
+    color: #1e3a5f;
+    border: 1px solid #dbe4ee;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .official-item-btn {
+    text-decoration: none;
+    background: #1e3a5f;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+
+  .official-item-btn:hover {
+    background: #172d49;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 576px) {
+    .official-item-image-wrap {
+      height: 200px;
+    }
+
+    .official-item-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .official-item-btn {
+      text-align: center;
+      width: 100%;
+    }
+  }
+</style>

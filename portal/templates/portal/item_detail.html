@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #f7f8fc;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 10px 30px rgba(0,0,0,0.06);
+
+    --lost: #ef4444;
+    --found: #10b981;
+    --claimed: #f59e0b;
+    --resolved: #6366f1;
+
+    --primary: #111827;
+    --primary-hover: #1f2937;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+  }
+
+  .detail-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0 40px;
+  }
+
+  .detail-image {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    background: #f3f4f6;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 480px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 1.1rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .main-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .item-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .badge-lost {
+    background: rgba(239,68,68,0.12);
+    color: var(--lost);
+  }
+
+  .badge-found {
+    background: rgba(16,185,129,0.12);
+    color: var(--found);
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .status-open {
+    background: rgba(59,130,246,0.12);
+    color: #2563eb;
+  }
+
+  .status-claimed {
+    background: rgba(245,158,11,0.12);
+    color: var(--claimed);
+  }
+
+  .status-resolved {
+    background: rgba(99,102,241,0.12);
+    color: var(--resolved);
+  }
+
+  .item-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .item-description {
+    color: #374151;
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-top: 18px;
+  }
+
+  .info-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    height: 100%;
+  }
+
+  .info-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .info-label {
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 120px;
+  }
+
+  .info-value {
+    color: var(--text);
+    text-align: right;
+    font-weight: 500;
+    word-break: break-word;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .custom-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-dark-custom {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-dark-custom:hover {
+    background: var(--primary-hover);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-warning-custom {
+    background: #f59e0b;
+    color: white;
+  }
+
+  .btn-warning-custom:hover {
+    background: #d97706;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-danger-custom {
+    background: #ef4444;
+    color: white;
+  }
+
+  .btn-danger-custom:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-success-custom {
+    background: #10b981;
+    color: white;
+  }
+
+  .btn-success-custom:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    margin: 55px 0 25px;
+    color: var(--text);
+  }
+
+  .match-card {
+    background: white;
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    height: 100%;
+    transition: all 0.25s ease;
+  }
+
+  .match-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .match-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    background: #f3f4f6;
+  }
+
+  .match-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .match-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .match-score {
+    display: inline-block;
+    background: rgba(17,24,39,0.08);
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .match-keywords {
+    font-size: 0.88rem;
+    color: #4b5563;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .empty-box {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+    color: var(--muted);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 768px) {
+    .detail-image,
+    .image-placeholder {
+      height: 300px;
+    }
+
+    .item-title {
+      font-size: 1.8rem;
+    }
+
+    .info-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .info-value {
+      text-align: left;
+    }
+  }
+</style>
+
+<div class="detail-wrapper">
+
+  <div class="row g-4 align-items-start">
+
+    <!-- LEFT SIDE -->
+    <div class="col-lg-7">
+      {% if item.image %}
+        <img src="{{ item.image.url }}" class="detail-image" alt="{{ item.title }}">
+      {% else %}
+        <div class="image-placeholder">No image uploaded</div>
+      {% endif %}
+
+      <div class="main-card mt-4">
+        <span class="item-badge {% if item.item_type == 'LOST' %}badge-lost{% else %}badge-found{% endif %}">
+          {{ item.get_item_type_display }}
+        </span>
+
+        <h1 class="item-title">{{ item.title }}</h1>
+
+        <span class="status-badge status-{{ item.status|lower }}">
+          {{ item.get_status_display }}
+        </span>
+
+        <div class="item-description">
+          {{ item.description }}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="col-lg-5">
+      <div class="info-card">
+        <h3 class="info-title">Item Information</h3>
+
+        <div class="info-row">
+          <div class="info-label">Category</div>
+          <div class="info-value">{{ item.category }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Location</div>
+          <div class="info-value">{{ item.location }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Date</div>
+          <div class="info-value">{{ item.date_of_event }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Status</div>
+          <div class="info-value">{{ item.get_status_display }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Contact</div>
+          <div class="info-value">{{ item.contact_info }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Posted By</div>
+          <div class="info-value">{{ item.user.username }}</div>
+        </div>
+
+        <div class="action-buttons">
+          {% if user == item.user %}
+            <a href="{% url 'item_update' item.id %}" class="custom-btn btn-warning-custom">Edit Item</a>
+            <a href="{% url 'item_delete' item.id %}" class="custom-btn btn-danger-custom">Delete Item</a>
+          {% elif user.is_authenticated and not already_claimed %}
+            <a href="{% url 'claim_item' item.id %}" class="custom-btn btn-success-custom">Claim This Item</a>
+          {% elif not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="custom-btn btn-dark-custom">Login to Claim</a>
+          {% else %}
+            <button class="custom-btn btn-dark-custom" disabled>You Already Claimed</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MATCH SECTION -->
+  <h2 class="section-heading">Suggested Matching Items</h2>
+
+  <div class="row g-4">
+    {% for score, overlap, m in suggestions %}
+      <div class="col-md-6 col-lg-4">
+        <div class="match-card">
+          {% if m.image %}
+            <img src="{{ m.image.url }}" class="match-image" alt="{{ m.title }}">
+          {% else %}
+            <div class="match-image d-flex align-items-center justify-content-center text-muted">No Image</div>
+          {% endif %}
+
+          <h5 class="match-title">{{ m.title }}</h5>
+          <p class="match-meta">{{ m.location }}</p>
+
+          <div class="match-score">Match Score: {{ score }}</div>
+
+          <div class="match-keywords">
+            <strong>Matched Keywords:</strong> {{ overlap|join:", " }}
+          </div>
+
+          <a href="{{ m.get_absolute_url }}" class="custom-btn btn-dark-custom">Open Item</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="empty-box">
+          <h5>No close matches found</h5>
+          <p class="mb-0">Try checking again after more users report lost or found items.</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}

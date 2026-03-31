@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+
+    --text: #0f172a;
+    --muted: #64748b;
+    --muted-light: #94a3b8;
+
+    --primary: #1e3a5f;
+    --primary-dark: #172d49;
+    --primary-soft: #e8eef6;
+
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --danger: #b91c1c;
+    --danger-soft: #fef2f2;
+
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+  }
+
+  .register-shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 34px 0 52px;
+  }
+
+  .register-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: 38px 34px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .register-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(30, 58, 95, 0.06);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .register-badge {
+    display: inline-block;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  .register-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .register-subtitle {
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.8;
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group {
+    margin-bottom: 6px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30,58,95,0.08);
+  }
+
+  .password-wrapper {
+    position: relative;
+  }
+
+  .password-wrapper input {
+    padding-right: 52px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.05rem;
+    color: var(--muted);
+    padding: 4px;
+  }
+
+  .toggle-password:hover {
+    color: var(--primary);
+  }
+
+  .helptext {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+
+  ul.errorlist li {
+    color: var(--danger);
+    background: var(--danger-soft);
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .register-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .login-link {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .login-link a {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(30,58,95,0.18);
+    padding-bottom: 2px;
+  }
+
+  .login-link a:hover {
+    color: var(--primary-dark);
+  }
+
+  .register-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .register-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .register-card {
+      padding: 26px 20px;
+    }
+
+    .register-title {
+      font-size: 1.8rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .register-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .register-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="register-shell">
+  <div class="register-card">
+
+    <span class="register-badge">Campus Portal Access</span>
+
+    <h1 class="register-title">Create Your Account</h1>
+
+    <p class="register-subtitle">
+      Register to report lost or found items, manage your submissions, and track claim activity securely through the campus portal.
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-grid">
+
+        <!-- Username -->
+        <div class="form-group full-width">
+          <label for="{{ form.username.id_for_label }}">Username</label>
+          {{ form.username }}
+          {% if form.username.help_text %}<small class="helptext">{{ form.username.help_text }}</small>{% endif %}
+          {% if form.username.errors %}{{ form.username.errors }}{% endif %}
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="{{ form.password1.id_for_label }}">Password</label>
+          <div class="password-wrapper">
+            {{ form.password1 }}
+            <button type="button" class="toggle-password" onclick="togglePassword('id_password1', this)">👁</button>
+          </div>
+          {% if form.password1.help_text %}<small class="helptext">{{ form.password1.help_text }}</small>{% endif %}
+          {% if form.password1.errors %}{{ form.password1.errors }}{% endif %}
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+          <div class="password-wrapper">
+            {{ form.password2 }}
+            <button type="button" class="toggle-password" onclick="togglePassword('id_password2', this)">👁</button>
+          </div>
+          {% if form.password2.help_text %}<small class="helptext">{{ form.password2.help_text }}</small>{% endif %}
+          {% if form.password2.errors %}{{ form.password2.errors }}{% endif %}
+        </div>
+
+      </div>
+
+      <div class="register-footer">
+        <div class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+        </div>
+
+        <button type="submit" class="register-btn">
+          Create Account
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+  function togglePassword(fieldId, button) {
+    const input = document.getElementById(fieldId);
+
+    if (input.type === "password") {
+      input.type = "text";
+      button.textContent = "🙈";
+    } else {
+      input.type = "password";
+      button.textContent = "👁";
+    }
+  }
+</script>
+
+{% endblock %}

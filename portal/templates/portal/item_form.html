@@ -1,0 +1,613 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    --card: rgba(255, 255, 255, 0.82);
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: rgba(148, 163, 184, 0.25);
+    --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    --primary: #0f172a;
+    --primary-hover: #1e293b;
+    --accent: #2563eb;
+    --accent-soft: rgba(37, 99, 235, 0.08);
+    --success: #10b981;
+    --danger: #ef4444;
+    --glass: blur(18px);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+  }
+
+  .premium-wrapper {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 0 50px;
+  }
+
+  .premium-card {
+    background: var(--card);
+    backdrop-filter: var(--glass);
+    -webkit-backdrop-filter: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 42px;
+    box-shadow: var(--shadow);
+  }
+
+  .premium-header {
+    margin-bottom: 35px;
+  }
+
+  .premium-badge {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 9px 15px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  .premium-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.7rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .premium-subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 760px;
+  }
+
+  .premium-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 9px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(203, 213, 225, 0.9);
+    background: rgba(255,255,255,0.92);
+    font-size: 0.96rem;
+    color: var(--text);
+    outline: none;
+    transition: all 0.22s ease;
+  }
+
+  .form-group textarea {
+    min-height: 180px;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 5px rgba(37,99,235,0.08);
+    transform: translateY(-1px);
+  }
+
+  .help-text {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 7px;
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+
+  .errorlist li {
+    color: var(--danger);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .upload-shell {
+    border: 2px dashed rgba(148,163,184,0.35);
+    border-radius: 28px;
+    padding: 34px 28px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(248,250,252,0.95));
+    text-align: center;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-shell.dragover {
+    border-color: var(--accent);
+    background: rgba(37,99,235,0.05);
+    transform: scale(1.01);
+  }
+
+  .upload-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(37,99,235,0.06), transparent 35%);
+    pointer-events: none;
+  }
+
+  .upload-icon {
+    font-size: 2.4rem;
+    margin-bottom: 14px;
+  }
+
+  .upload-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .upload-subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .upload-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .upload-btn {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 16px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    box-shadow: 0 10px 20px rgba(15,23,42,0.06);
+  }
+
+  .upload-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .camera-btn {
+    background: var(--primary);
+    color: white;
+  }
+
+  .camera-btn:hover {
+    background: var(--primary-hover);
+  }
+
+  .file-btn {
+    background: var(--accent);
+    color: white;
+  }
+
+  .file-btn:hover {
+    background: #1d4ed8;
+  }
+
+  .danger-btn {
+    background: white;
+    color: var(--danger);
+    border: 1px solid rgba(239,68,68,0.18);
+  }
+
+  .danger-btn:hover {
+    background: rgba(239,68,68,0.06);
+  }
+
+  .preview-wrap {
+    margin-top: 24px;
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .preview-image {
+    max-width: 100%;
+    max-height: 340px;
+    border-radius: 22px;
+    border: 1px solid rgba(226,232,240,0.9);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.08);
+    object-fit: cover;
+  }
+
+  .file-meta {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .camera-panel {
+    display: none;
+    margin-top: 24px;
+    background: rgba(15,23,42,0.03);
+    border: 1px solid rgba(148,163,184,0.2);
+    border-radius: 24px;
+    padding: 20px;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .camera-video {
+    width: 100%;
+    max-height: 380px;
+    border-radius: 20px;
+    background: black;
+    object-fit: cover;
+    margin-bottom: 18px;
+  }
+
+  .camera-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .submit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 38px;
+    flex-wrap: wrap;
+  }
+
+  .back-link {
+    color: var(--muted);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+    transform: translateX(-2px);
+  }
+
+  .save-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 15px 28px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 0.96rem;
+    transition: all 0.22s ease;
+    box-shadow: 0 10px 20px rgba(15,23,42,0.08);
+  }
+
+  .save-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .premium-card {
+      padding: 26px;
+      border-radius: 24px;
+    }
+
+    .premium-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .premium-title {
+      font-size: 2rem;
+    }
+
+    .upload-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .upload-btn {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+</style>
+
+<div class="premium-wrapper">
+  <div class="premium-card">
+
+    <div class="premium-header">
+      <span class="premium-badge">Campus Lost & Found</span>
+      <h1 class="premium-title">{{ title }}</h1>
+      <p class="premium-subtitle">
+        Add complete item details so other students can identify it faster. A clear image and a strong description improve matching accuracy.
+      </p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="premium-grid">
+
+        <div class="form-group full-width">
+          <label for="{{ form.title.id_for_label }}">Item Title</label>
+          {{ form.title }}
+          {% if form.title.errors %}{{ form.title.errors }}{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.item_type.id_for_label }}">Item Type</label>
+          {{ form.item_type }}
+          {% if form.item_type.errors %}{{ form.item_type.errors }}{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.category.id_for_label }}">Category</label>
+          {{ form.category }}
+          {% if form.category.errors %}{{ form.category.errors }}{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.location.id_for_label }}">Location</label>
+          {{ form.location }}
+          {% if form.location.errors %}{{ form.location.errors }}{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.date_of_event.id_for_label }}">Date of Event</label>
+          {{ form.date_of_event }}
+          {% if form.date_of_event.errors %}{{ form.date_of_event.errors }}{% endif %}
+        </div>
+
+        <div class="form-group full-width">
+          <label for="{{ form.contact_info.id_for_label }}">Contact Information</label>
+          {{ form.contact_info }}
+          <div class="help-text">Add phone number, email, or any contact method.</div>
+          {% if form.contact_info.errors %}{{ form.contact_info.errors }}{% endif %}
+        </div>
+
+        <div class="form-group full-width">
+          <label for="{{ form.description.id_for_label }}">Description</label>
+          {{ form.description }}
+          <div class="help-text">Mention color, brand, condition, serial marks, scratches, cover, or anything identifiable.</div>
+          {% if form.description.errors %}{{ form.description.errors }}{% endif %}
+        </div>
+
+        <!-- PREMIUM IMAGE SECTION -->
+        <div class="form-group full-width">
+          <label>Upload Image</label>
+
+          <div class="upload-shell" id="uploadShell">
+            <div class="upload-icon">📷</div>
+            <div class="upload-title">Add an image of the item</div>
+            <div class="upload-subtitle">
+              Choose from files, drag & drop, or capture directly from your camera.
+            </div>
+
+            <!-- Hidden Django field -->
+            <div style="display:none;">
+              {{ form.image }}
+            </div>
+
+            <!-- Hidden inputs -->
+            <input type="file" id="filePicker" accept="image/*" style="display:none;">
+            <input type="file" id="cameraPicker" accept="image/*" capture="environment" style="display:none;">
+
+            <div class="upload-actions">
+              <button type="button" class="upload-btn camera-btn" onclick="openCameraCapture()">
+                📸 Take Photo
+              </button>
+
+              <button type="button" class="upload-btn file-btn" onclick="openFilePicker()">
+                📁 Choose File
+              </button>
+
+              <button type="button" class="upload-btn danger-btn" onclick="removeSelectedImage()">
+                ✖ Remove
+              </button>
+            </div>
+
+            <!-- Live camera panel -->
+            <div id="cameraPanel" class="camera-panel">
+              <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+              <canvas id="cameraCanvas" style="display:none;"></canvas>
+
+              <div class="camera-controls">
+                <button type="button" class="upload-btn file-btn" onclick="capturePhoto()">📷 Capture</button>
+                <button type="button" class="upload-btn danger-btn" onclick="closeCamera()">✖ Close Camera</button>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div id="previewWrap" class="preview-wrap">
+              <img id="previewImage" class="preview-image" src="" alt="Preview">
+              <div id="fileMeta" class="file-meta">No image selected</div>
+            </div>
+
+            <div class="help-text mt-3">
+              JPG, PNG or camera capture supported.
+            </div>
+          </div>
+
+          {% if form.image.errors %}{{ form.image.errors }}{% endif %}
+        </div>
+
+      </div>
+
+      <div class="submit-row">
+        <a href="{% url 'item_list' %}" class="back-link">← Back to Browse Items</a>
+        <button type="submit" class="save-btn">Save Item</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const djangoImageInput = document.getElementById("id_image");
+  const filePicker = document.getElementById("filePicker");
+  const cameraPicker = document.getElementById("cameraPicker");
+  const uploadShell = document.getElementById("uploadShell");
+
+  const previewWrap = document.getElementById("previewWrap");
+  const previewImage = document.getElementById("previewImage");
+  const fileMeta = document.getElementById("fileMeta");
+
+  const cameraPanel = document.getElementById("cameraPanel");
+  const cameraVideo = document.getElementById("cameraVideo");
+  const cameraCanvas = document.getElementById("cameraCanvas");
+
+  let currentStream = null;
+
+  window.openFilePicker = function () {
+    filePicker.click();
+  };
+
+  window.openCameraCapture = function () {
+    // Mobile-friendly file capture fallback
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      cameraPicker.click();
+      return;
+    }
+
+    // Desktop live camera
+    openLiveCamera();
+  };
+
+  function updateDjangoInput(file) {
+    if (!file) return;
+
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    djangoImageInput.files = dt.files;
+
+    fileMeta.textContent = "Selected: " + file.name;
+    previewWrap.style.display = "block";
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  filePicker.addEventListener("change", function () {
+    const file = filePicker.files[0];
+    updateDjangoInput(file);
+  });
+
+  cameraPicker.addEventListener("change", function () {
+    const file = cameraPicker.files[0];
+    updateDjangoInput(file);
+  });
+
+  // Drag & drop
+  uploadShell.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    uploadShell.classList.add("dragover");
+  });
+
+  uploadShell.addEventListener("dragleave", function () {
+    uploadShell.classList.remove("dragover");
+  });
+
+  uploadShell.addEventListener("drop", function (e) {
+    e.preventDefault();
+    uploadShell.classList.remove("dragover");
+
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      updateDjangoInput(file);
+    }
+  });
+
+  window.removeSelectedImage = function () {
+    djangoImageInput.value = "";
+    filePicker.value = "";
+    cameraPicker.value = "";
+    previewImage.src = "";
+    previewWrap.style.display = "none";
+    fileMeta.textContent = "No image selected";
+    closeCamera();
+  };
+
+  async function openLiveCamera() {
+    try {
+      currentStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      cameraVideo.srcObject = currentStream;
+      cameraPanel.style.display = "block";
+    } catch (error) {
+      alert("Camera access failed. Your browser may block webcam access or no camera is available.");
+    }
+  }
+
+  window.closeCamera = function () {
+    if (currentStream) {
+      currentStream.getTracks().forEach(track => track.stop());
+      currentStream = null;
+    }
+    cameraPanel.style.display = "none";
+  };
+
+  window.capturePhoto = function () {
+    if (!currentStream) return;
+
+    const videoWidth = cameraVideo.videoWidth;
+    const videoHeight = cameraVideo.videoHeight;
+
+    cameraCanvas.width = videoWidth;
+    cameraCanvas.height = videoHeight;
+
+    const ctx = cameraCanvas.getContext("2d");
+    ctx.drawImage(cameraVideo, 0, 0, videoWidth, videoHeight);
+
+    cameraCanvas.toBlob(function(blob) {
+      const file = new File([blob], "captured-image.png", { type: "image/png" });
+      updateDjangoInput(file);
+      closeCamera();
+    }, "image/png");
+  };
+});
+</script>
+
+{% endblock %}

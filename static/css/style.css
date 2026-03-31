@@ -1,0 +1,6 @@
+
+body{background:#f8fafc}
+.hero{background:linear-gradient(135deg,#0f172a,#1d4ed8)}
+.stat-card{background:#fff;padding:1.5rem;border-radius:1.5rem;box-shadow:0 10px 25px rgba(0,0,0,.06);text-align:center}
+.item-thumb{height:220px;object-fit:cover}
+.card{border:none}

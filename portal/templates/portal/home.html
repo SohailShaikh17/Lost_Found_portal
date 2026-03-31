@@ -1,0 +1,506 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+    --surface-accent: #f1f5f9;
+
+    --text: #0f172a;
+    --muted: #64748b;
+    --muted-light: #94a3b8;
+
+    --primary: #1e3a5f;
+    --primary-dark: #172d49;
+    --primary-soft: #e8eef6;
+
+    --info: #1d4ed8;
+    --info-soft: #eff6ff;
+
+    --success: #15803d;
+    --success-soft: #ecfdf3;
+
+    --warning: #b45309;
+    --warning-soft: #fffbeb;
+
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+  }
+
+  .home-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 0 48px;
+  }
+
+  /* Different border vibe */
+  .framed-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .framed-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(30, 58, 95, 0.06);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* HERO */
+  .hero-card {
+    padding: 54px 42px;
+    margin-bottom: 28px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+
+  .hero-title span {
+    color: var(--primary);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 680px;
+    line-height: 1.85;
+    margin-bottom: 28px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+
+  .hero-btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .hero-btn-primary:hover {
+    background: var(--primary-dark);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .hero-btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 1px solid var(--border-strong);
+  }
+
+  .hero-btn-secondary:hover {
+    background: var(--surface-soft);
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .hero-panel {
+    background: var(--surface-soft);
+    border: 1px dashed var(--border-strong);
+    border-radius: 22px;
+    padding: 26px;
+  }
+
+  .hero-panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .hero-panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .hero-panel-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .hero-panel-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .hero-panel-text strong {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .hero-panel-text span {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    padding: 26px 24px;
+  }
+
+  .stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    border: 1px solid var(--border);
+    background: var(--surface-soft);
+  }
+
+  .stat-value {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-note {
+    margin-top: 10px;
+    font-size: 0.84rem;
+    color: var(--muted-light);
+  }
+
+  /* SECTION HEADER */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .section-kicker {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .section-subtitle {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .section-link {
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(30,58,95,0.2);
+    padding-bottom: 2px;
+  }
+
+  .section-link:hover {
+    color: var(--primary-dark);
+  }
+
+  /* RECENT POSTS */
+  .recent-card {
+    padding: 28px;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .item-wrap {
+    animation: fadeUp 0.35s ease both;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 24px;
+    background: var(--surface-soft);
+    border: 1px dashed var(--border-strong);
+    border-radius: 18px;
+  }
+
+  .empty-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .empty-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .empty-text {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 992px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .home-shell {
+      padding-top: 18px;
+    }
+
+    .hero-card,
+    .recent-card {
+      padding: 24px 20px;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-btn-primary,
+    .hero-btn-secondary {
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="home-shell">
+
+  <!-- HERO -->
+  <section class="framed-card hero-card">
+    <div class="hero-grid">
+
+      <div>
+        <span class="hero-badge">Campus Lost & Found Portal</span>
+
+        <h1 class="hero-title">
+          Find what’s lost. <br>
+          <span>Return what’s found.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          A secure and structured campus platform where students can report, browse, and claim lost or found belongings with clarity and accountability.
+        </p>
+
+        <div class="hero-actions">
+          <a href="{% url 'item_create' %}" class="hero-btn-primary">+ Report Item</a>
+          <a href="{% url 'item_list' %}" class="hero-btn-secondary">Browse Items</a>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="hero-panel-title">How the portal works</div>
+
+        <div class="hero-panel-list">
+          <div class="hero-panel-item">
+            <div class="hero-panel-icon">📌</div>
+            <div class="hero-panel-text">
+              <strong>Report an item</strong>
+              <span>Submit lost or found belongings with clear details and optional images.</span>
+            </div>
+          </div>
+
+          <div class="hero-panel-item">
+            <div class="hero-panel-icon">🔍</div>
+            <div class="hero-panel-text">
+              <strong>Browse and match</strong>
+              <span>Search through reported items and identify possible matches quickly.</span>
+            </div>
+          </div>
+
+          <div class="hero-panel-item">
+            <div class="hero-panel-icon">🤝</div>
+            <div class="hero-panel-text">
+              <strong>Claim responsibly</strong>
+              <span>Raise a claim request and coordinate secure item return through the system.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-grid">
+    <div class="framed-card stat-card">
+      <div class="stat-top">
+        <div class="stat-label">Lost Items</div>
+        <div class="stat-icon">📄</div>
+      </div>
+      <div class="stat-value">{{ site_total_lost }}</div>
+      <div class="stat-note">Items currently reported as lost on the portal</div>
+    </div>
+
+    <div class="framed-card stat-card">
+      <div class="stat-top">
+        <div class="stat-label">Found Items</div>
+        <div class="stat-icon">📍</div>
+      </div>
+      <div class="stat-value">{{ site_total_found }}</div>
+      <div class="stat-note">Items that have been reported as found by users</div>
+    </div>
+
+    <div class="framed-card stat-card">
+      <div class="stat-top">
+        <div class="stat-label">Claimed / Resolved</div>
+        <div class="stat-icon">✔</div>
+      </div>
+      <div class="stat-value">{{ site_total_claimed }}</div>
+      <div class="stat-note">Items that have already been claimed or resolved</div>
+    </div>
+  </section>
+
+  <!-- RECENT POSTS -->
+  <section class="framed-card recent-card">
+    <div class="section-head">
+      <div class="section-title-wrap">
+        <div class="section-kicker">Latest Activity</div>
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="section-subtitle">Recently submitted lost and found items across campus</div>
+      </div>
+
+      <a href="{% url 'item_list' %}" class="section-link">View all items →</a>
+    </div>
+
+    <div class="items-grid">
+      {% for item in recent_items %}
+        <div class="item-wrap">
+          {% include 'portal/partials/item_card.html' %}
+        </div>
+      {% empty %}
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">No items reported yet</div>
+          <div class="empty-text">Once users start reporting items, they will appear here.</div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}

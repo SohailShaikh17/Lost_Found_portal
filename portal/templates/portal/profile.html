@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+
+    --text: #0f172a;
+    --muted: #64748b;
+    --muted-light: #94a3b8;
+
+    --primary: #1e3a5f;
+    --primary-dark: #172d49;
+    --primary-soft: #e8eef6;
+
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --danger: #b91c1c;
+    --danger-soft: #fef2f2;
+
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+  }
+
+  .profile-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 34px 0 52px;
+  }
+
+  .profile-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    padding: 38px 34px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(30, 58, 95, 0.06);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .profile-badge {
+    display: inline-block;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+
+  .profile-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .profile-subtitle {
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    max-width: 620px;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .profile-side {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .avatar-preview {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: var(--shadow);
+    background: #e2e8f0;
+  }
+
+  .avatar-placeholder {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dbeafe, #e2e8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--primary);
+    border: 4px solid white;
+    box-shadow: var(--shadow);
+  }
+
+  .profile-username {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .profile-note {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .form-area p {
+    margin-bottom: 18px;
+  }
+
+  .form-area label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .form-area input,
+  .form-area select,
+  .form-area textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .form-area input:focus,
+  .form-area select:focus,
+  .form-area textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(30,58,95,0.08);
+  }
+
+  .form-area .helptext {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .form-area ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+
+  .form-area ul.errorlist li {
+    color: var(--danger);
+    background: var(--danger-soft);
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .save-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .secondary-link {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .secondary-link:hover {
+    color: var(--text);
+  }
+
+  .save-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .save-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .profile-card {
+      padding: 26px 20px;
+    }
+
+    .profile-title {
+      font-size: 1.8rem;
+    }
+
+    .profile-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .save-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .save-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="profile-shell">
+  <div class="profile-card">
+
+    <span class="profile-badge">Account Settings</span>
+
+    <h1 class="profile-title">My Profile</h1>
+
+    <p class="profile-subtitle">
+      Manage your account information, update your profile details, and keep your campus lost and found account information current.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="profile-grid">
+
+        <!-- Left side -->
+        <div class="profile-side">
+          {% if request.user.profile.avatar %}
+            <img src="{{ request.user.profile.avatar.url }}" alt="Profile Avatar" class="avatar-preview">
+          {% else %}
+            <div class="avatar-placeholder">👤</div>
+          {% endif %}
+
+          <div class="profile-username">{{ request.user.username }}</div>
+          <div class="profile-note">
+            Your profile information helps maintain trust and accountability within the campus portal.
+          </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="form-area">
+          {{ form.as_p }}
+
+          <div class="save-row">
+            <a href="{% url 'dashboard' %}" class="secondary-link">← Back to Dashboard</a>
+            <button type="submit" class="save-btn">Save Changes</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
